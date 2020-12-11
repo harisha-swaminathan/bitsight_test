@@ -4,7 +4,7 @@ import axios from 'axios';
 const Repos = ()=>{
     const [repositories, setRepositories] = useState([]);
     
-    let getRepositories = ()=>{
+    const getRepositories = ()=>{
         axios.get('https://api.github.com/search/repositories?q=created:%22%3E2020-11-11%22&sort=stars&order=desc&per_page=5',{
             headers: {
                 'Accept' : 'application/vnd.github.v3+json'
@@ -12,21 +12,19 @@ const Repos = ()=>{
         })
         .then((data)=>{
             setRepositories(data.data.items);
-        });
+        }).catch((error)=>{
+            console.log(`An error has occured: ${error}`)
+        })
     }
-    let onRepoButtonClick = ()=>{
+    const onRepoButtonClick = (e)=>{
+        e.preventDefault();
         getRepositories();
     }
 
     useEffect(()=>{
         getRepositories();
-        const repoInterval = setInterval(function(){
-            getRepositories();
-        }, 20000);
-        return ()=>{
-            clearInterval(repoInterval);
-        }
-    },[])
+    },[]);
+
     return(
         <div>
             <button id="hot_repos" className="repos__button" onClick={onRepoButtonClick}>Repositories</button>

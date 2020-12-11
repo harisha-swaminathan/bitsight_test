@@ -3,35 +3,45 @@ import axios from 'axios';
 
 const Users = ()=>{
     const [users, setUsers] = useState([]);
-    let getUser = ()=>{
+    const getUser = ()=>{
         axios.get('https://api.github.com/search/users?q=created:%22%3E2020-11-11%22&sort=followers&order=desc&per_page=5',{
             headers: {
                 'Accept' : 'application/vnd.github.v3+json'
             }
         }).then((data)=>{
                 let usersWithFollowers = data.data.items;
-                usersWithFollowers.forEach((user)=>{
+                usersWithFollowers.forEach((user,i)=>{
                     axios.get(`https://api.github.com/users/${user.login}`).then((data)=>{
                     return data.data;
                     }).then((data)=>{
-                        user.followers = data.followers
+                        usersWithFollowers[i].followers = data.followers;
+                        if(i===usersWithFollowers.length-1){
+                            setUsers(usersWithFollowers);
+                        }
                     })
-                });
-                setUsers(usersWithFollowers);
-        });
+                })
+        }).catch((error)=>{
+            console.log("An error has occured:", error)
+        })
     }
+    const onUserButtonClick = (e)=>{
+        e.preventDefault();
+        getUser();
+    }
+
     useEffect(()=>{
         getUser();
         const UserInterval = setInterval(() => {
             getUser();
-        }, 20000);
+        }, 120000);
         return ()=>{
             clearInterval(UserInterval);
         }
     },[]);
+
     return(
         <div>
-            <button id="prolific_users" className="users__button">Users</button>
+            <button id="prolific_users" className="users__button" onClick={onUserButtonClick}>Users</button>
             {users && 
                 <div className="users">
                     <div className="users__header">
