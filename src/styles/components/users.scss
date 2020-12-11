@@ -1,0 +1,41 @@
+.users{
+    margin: auto;
+    width: 50%;
+    border: 1px solid #e1e4e8;
+    &__header{
+        background-color: #f5f8fa;
+        color: #586069;
+        display: flex;
+        justify-content: space-around;
+    }
+    &__button{
+        margin: 1rem;
+        padding: 16px 24px;
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: #fff;
+        vertical-align: middle;
+        background-color: #1074e7;
+        border: 1px solid #1074e7;
+        border-radius: 6px;
+    }
+}
+.user{
+    &__details{
+        color: #586069;
+        display: flex;
+        padding: 1rem;
+        margin-top: -1px;
+        list-style-type: none;
+        border-top: 1px solid #eaecef;
+    }
+    &__avatar{
+        height: 75px;
+        width: 75px;
+        border-radius: 50%;
+        padding: 0.5rem;
+    }
+    &__id, &__login,&__followers,&__avatar-container{
+        width:25%;
+    }
+}
